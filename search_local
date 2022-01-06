@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+require './api.rb'
+require 'fileutils'
+
+host = ARGV[0]
+keyword = ARGV[1]
+
+api = Api.new(host)
+json_dir = "statuses/#{host}/timeline/"
+FileUtils.mkdir_p(json_dir) unless File.exists?(json_dir)
+
+max_id = 9223372036854775807
+count = 0
+while true
+    printf "Searching#{'.' * count}\r"
+    $stdout.flush
+    statuses = api.get_timelines(max_id)
+    break if statuses.empty?
+    filename = "#{json_dir}/#{statuses.first[:id]}.json"
+    File.open(filename, 'w'){|f| f.write(JSON.dump(statuses))}
+    statuses.filter{|s| s[:content].include?(keyword)}.map{|s| p s[:content]}
+    max_id = statuses.last[:id]
+    sleep 3
+    count += 1
+end
