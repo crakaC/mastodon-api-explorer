@@ -12,7 +12,6 @@ username = ARGV[1].gsub('@', '')
 api = Api.new(host)
 
 # ユーザーID引っ張ってくるためにとりあえず検索
-# 複数ヒットするクソ仕様なので諦めて対応
 accounts = api.search(username)
 if accounts.empty?
     puts "#{username} is not found"
