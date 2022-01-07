@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 require './api.rb'
 require 'fileutils'
 
@@ -46,9 +47,9 @@ max_id = 9223372036854775807 # bigintの最大値
 while true
     statuses = api.get_statuses(user_id, max_id)
     break if statuses.empty?
-    puts "fetched:#{statuses.first['id']}"
-    filename = "#{json_dir}/#{statuses.first['id']}.json"
+    puts "fetched:#{statuses.first[:id]}"
+    filename = "#{json_dir}/#{statuses.first[:id]}.json"
     File.open(filename, 'w'){|f|f.write(JSON.dump(statuses))}
-    max_id = statuses.last['id']
+    max_id = statuses.last[:id]
     sleep 3
 end

@@ -17,7 +17,7 @@ class Api
         params = {limit: 100}
         params[:max_id] = max_id unless max_id.nil?
         statuses = get("/api/v1/accounts/#{user_id}/statuses", params)
-        statuses.filter{|e| e['reblog'].nil? }.map{|s| {'id' => s['id'], 'content' => s['content']}}
+        statuses.filter{|e| e['reblog'].nil? }.map{|s| {id:s['id'], content: s['content']}}
     end
 
     def get_timelines(max_id = nil)
